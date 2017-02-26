@@ -23,6 +23,7 @@ $ scrapy runspider \
 $ pip install scrapy
 """
 import os
+import re
 import urlparse
 
 from scrapy import Spider, Request, FormRequest
@@ -40,6 +41,7 @@ class MoodleSpider(Spider):
     def parse_courses(self, response):
         for url in response.css('.block_course_list_conu a'):
             name = url.xpath('text()').extract_first()
+            name = re.sub(r'[^\x00-\x7f]', r'', name).strip()
             url = url.xpath('@href').extract_first()
             if hasattr(self, 'course'):
                 if self.course in name:
