@@ -26,7 +26,7 @@ import os
 import re
 import urlparse
 
-from scrapy import Spider, Request, FormRequest
+from scrapy import Spider, Request, FormRequest, log
 
 
 class MoodleSpider(Spider):
@@ -59,7 +59,7 @@ class MoodleSpider(Spider):
             try:
                 os.makedirs(path)
             except OSError as e:
-                pass
+                self.log("Could not create directory", level=log.WARNING)
             # resources are downloadable files
             for res in week.xpath('.//a[contains(@href, "resource/view.php")]'):
                 name = res.css('span::text').extract_first()
