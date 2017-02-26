@@ -53,9 +53,9 @@ class MoodleSpider(Spider):
                                 meta={'course': name})
 
     def parse_course_page(self, response):
-        for week in response.css('ul.weeks > li'):
+        for pos, week in enumerate(response.css('ul.weeks > li')):
             section_name = week.css('h3.sectionname > span::text').extract_first()
-            path = self.root_dir + response.meta['course'] + '/' + section_name
+            path = u'{0}{1}/{2}) {3}'.format(self.root_dir, response.meta['course'], pos, section_name)
             try:
                 os.makedirs(path)
             except OSError as e:
